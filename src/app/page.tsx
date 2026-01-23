@@ -31,8 +31,6 @@ export default function Home() {
     },
   ];
 
-  const socialProof = ['Company A', 'Company B', 'Company C', 'Company D', 'Company E'];
-
   const steps = [
     {
       number: '01',
@@ -58,12 +56,15 @@ export default function Home() {
       {/* Social Proof */}
       <section className="py-12 bg-white border-y border-gray-200">
         <div className="container-custom">
-          <p className="text-center text-sm font-medium text-gray-600 mb-8">
-            Trusted by leading companies
+          <p className="text-center text-sm font-medium text-gray-500 mb-8">
+            Trusted by product teams at
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-12">
-            {socialProof.map((company) => (
-              <div key={company} className="text-xl font-semibold text-gray-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+            {['Dropbox', 'Notion', 'Linear', 'Figma', 'Vercel'].map((company) => (
+              <div
+                key={company}
+                className="text-xl font-bold text-gray-300 hover:text-gray-400 transition-colors"
+              >
                 {company}
               </div>
             ))}

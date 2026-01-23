@@ -41,10 +41,14 @@ export default function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-4">
-            <Button variant="ghost" size="md">
-              Sign in
-            </Button>
-            <Button size="md">Book a demo</Button>
+            <Link href="/signin">
+              <Button variant="ghost" size="md">
+                Sign in
+              </Button>
+            </Link>
+            <Link href="/book">
+              <Button size="md">Book a demo</Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -73,12 +77,16 @@ export default function Navigation() {
                 </Link>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
-                <Button variant="ghost" size="md" className="w-full">
-                  Sign in
-                </Button>
-                <Button size="md" className="w-full">
-                  Book a demo
-                </Button>
+                <Link href="/signin" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" size="md" className="w-full">
+                    Sign in
+                  </Button>
+                </Link>
+                <Link href="/book" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="md" className="w-full">
+                    Book a demo
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

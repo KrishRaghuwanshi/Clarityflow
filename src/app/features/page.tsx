@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { BarChart3, Target, Zap, Users, FileText, Share2 } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import Link from 'next/link';
 
 const features = [
   {
@@ -102,7 +103,9 @@ export default function FeaturesPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Button size="lg">Start free trial</Button>
+              <Link href="/book">
+                <Button size="lg">Start free trial</Button>
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -209,10 +212,14 @@ export default function FeaturesPage() {
               Join teams already improving their products with Clarityflow.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">Start free trial</Button>
-              <Button size="lg" variant="secondary">
-                Book a demo
-              </Button>
+              <Link href="/book">
+                <Button size="lg">Start free trial</Button>
+              </Link>
+              <Link href="/book">
+                <Button size="lg" variant="secondary">
+                  Book a demo
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -9,19 +9,18 @@ export default function Footer() {
       { name: 'Dashboard', href: '/dashboard' },
     ],
     company: [
-      { name: 'About', href: '#' },
-      { name: 'Blog', href: '#' },
-      { name: 'Careers', href: '#' },
+      { name: 'About', href: '/about' },
+      { name: 'Blog', href: '/blog' },
+      { name: 'Careers', href: '/careers' },
     ],
-    resources: [
-      { name: 'Documentation', href: '#' },
-      { name: 'Help Center', href: '#' },
-      { name: 'API Reference', href: '#' },
+    support: [
+      { name: 'User Guides', href: '/docs' },
+      { name: 'Help Center', href: '/help' },
     ],
     legal: [
-      { name: 'Privacy', href: '#' },
-      { name: 'Terms', href: '#' },
-      { name: 'Security', href: '#' },
+      { name: 'Privacy', href: '/privacy' },
+      { name: 'Terms', href: '/terms' },
+      { name: 'Security', href: '/security' },
     ],
   };
 
@@ -97,9 +96,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white mb-3">Resources</h3>
+            <h3 className="text-sm font-semibold text-white mb-3">Support</h3>
             <ul className="space-y-2">
-              {footerLinks.resources.map((link) => (
+              {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="text-sm hover:text-white transition-colors">
                     {link.name}

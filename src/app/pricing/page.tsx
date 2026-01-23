@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const plans = [
@@ -183,13 +184,15 @@ export default function PricingPage() {
                     )}
                   </div>
 
-                  <Button
-                    size="lg"
-                    variant={plan.popular ? 'primary' : 'secondary'}
-                    className="w-full mb-6"
-                  >
-                    Start free trial
-                  </Button>
+                  <Link href="/book">
+                    <Button
+                      size="lg"
+                      variant={plan.popular ? 'primary' : 'secondary'}
+                      className="w-full mb-6"
+                    >
+                      Start free trial
+                    </Button>
+                  </Link>
 
                   <div className="space-y-3">
                     {plan.features.map((feature) => (
@@ -267,10 +270,14 @@ export default function PricingPage() {
               Our team is here to help you find the right plan for your needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">Book a demo</Button>
-              <Button size="lg" variant="secondary">
-                Contact sales
-              </Button>
+              <Link href="/book">
+                <Button size="lg">Book a demo</Button>
+              </Link>
+              <Link href="/contact">
+                <Button size="lg" variant="secondary">
+                  Contact sales
+                </Button>
+              </Link>
             </div>
             <p className="mt-6 text-sm text-gray-600">No credit card required • Cancel anytime</p>
           </div>

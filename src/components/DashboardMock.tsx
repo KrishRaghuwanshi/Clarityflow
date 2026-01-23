@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Monitor, Smartphone } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Monitor, Smartphone, TrendingUp, TrendingDown, Clock, Users } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
 import Card from './ui/Card';
 import InsightCard from './InsightCard';
@@ -30,14 +31,37 @@ interface DashboardData {
   }>;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
+  return (
+    <span className="text-3xl font-bold text-gray-900">
+      {value.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
+
 export default function DashboardMock() {
   const { activeDevice, setActiveDevice } = useUIStore();
 
   const { data, isLoading } = useQuery<DashboardData>({
     queryKey: ['dashboard'],
     queryFn: async () => {
-      // Simulate API call with delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 800));
       const response = await fetch('/dashboard.json');
       return response.json();
     },
@@ -56,16 +80,55 @@ export default function DashboardMock() {
 
   if (!data) return null;
 
+  const metricCards = [
+    {
+      label: 'Active Users',
+      value: data.metrics.activeUsers,
+      change: '+12%',
+      isPositive: true,
+      icon: Users,
+    },
+    {
+      label: 'Conversion Rate',
+      value: data.metrics.conversionRate,
+      suffix: '%',
+      change: '+3.2%',
+      isPositive: true,
+      icon: TrendingUp,
+    },
+    {
+      label: 'Drop-off Rate',
+      value: data.metrics.dropoffPercentage,
+      suffix: '%',
+      change: '+2.1%',
+      isPositive: false,
+      icon: TrendingDown,
+    },
+    {
+      label: 'Avg. Session',
+      value: Math.floor(data.metrics.avgSessionDuration / 60),
+      suffix: 'm',
+      change: '-8s',
+      isPositive: false,
+      icon: Clock,
+    },
+  ];
+
   return (
-    <div className="space-y-6">
+    <motion.div
+      className="space-y-8"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Device Selector */}
-      <div className="flex justify-end">
-        <div className="inline-flex rounded-lg border border-gray-300 p-1">
+      <motion.div variants={itemVariants} className="flex justify-end">
+        <div className="inline-flex rounded-lg border border-gray-300 p-1 bg-white shadow-sm">
           <button
             onClick={() => setActiveDevice('desktop')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
               activeDevice === 'desktop'
-                ? 'bg-indigo-600 text-white'
+                ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -74,9 +137,9 @@ export default function DashboardMock() {
           </button>
           <button
             onClick={() => setActiveDevice('mobile')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
               activeDevice === 'mobile'
-                ? 'bg-indigo-600 text-white'
+                ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -84,76 +147,99 @@ export default function DashboardMock() {
             Mobile
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Metrics Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <div className="text-sm font-medium text-gray-600 mb-1">Active Users</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {data.metrics.activeUsers.toLocaleString()}
-          </div>
-          <div className="text-xs text-green-600 mt-1">↑ 12% from last week</div>
-        </Card>
-
-        <Card>
-          <div className="text-sm font-medium text-gray-600 mb-1">Conversion Rate</div>
-          <div className="text-3xl font-bold text-gray-900">{data.metrics.conversionRate}%</div>
-          <div className="text-xs text-green-600 mt-1">↑ 3.2% from last week</div>
-        </Card>
-
-        <Card>
-          <div className="text-sm font-medium text-gray-600 mb-1">Drop-off Rate</div>
-          <div className="text-3xl font-bold text-gray-900">{data.metrics.dropoffPercentage}%</div>
-          <div className="text-xs text-red-600 mt-1">↑ 2.1% from last week</div>
-        </Card>
-
-        <Card>
-          <div className="text-sm font-medium text-gray-600 mb-1">Avg. Session</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {Math.floor(data.metrics.avgSessionDuration / 60)}m{' '}
-            {data.metrics.avgSessionDuration % 60}s
-          </div>
-          <div className="text-xs text-gray-600 mt-1">↓ 8s from last week</div>
-        </Card>
-      </div>
-
-      {/* Funnel Visualization */}
-      <Card>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Funnel</h3>
-        <div className="space-y-3">
-          {data.funnelSteps.map((step) => (
-            <div key={step.step}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-gray-700">{step.step}</span>
-                <span className="text-sm text-gray-600">{step.users.toLocaleString()} users</span>
-              </div>
-              <div className="relative h-8 bg-gray-100 rounded-full overflow-hidden">
+      <motion.div variants={itemVariants} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {metricCards.map((metric, index) => (
+          <motion.div
+            key={metric.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 + 0.2 }}
+          >
+            <Card hover className="relative overflow-hidden">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-sm font-medium text-gray-600 mb-2">{metric.label}</div>
+                  <AnimatedCounter value={metric.value} suffix={metric.suffix} />
+                  <div
+                    className={`text-sm font-medium mt-2 ${metric.isPositive ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {metric.change} from last week
+                  </div>
+                </div>
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-500 to-violet-600 transition-all duration-500"
-                  style={{ width: `${step.conversionRate}%` }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700">
-                  {step.conversionRate}% conversion
-                  {step.dropoff > 0 && (
-                    <span className="ml-2 text-red-600">({step.dropoff}% drop)</span>
-                  )}
+                  className={`rounded-lg p-2 ${metric.isPositive ? 'bg-green-100' : 'bg-red-100'}`}
+                >
+                  <metric.icon
+                    className={`h-5 w-5 ${metric.isPositive ? 'text-green-600' : 'text-red-600'}`}
+                  />
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </Card>
+            </Card>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Funnel Visualization */}
+      <motion.div variants={itemVariants}>
+        <Card>
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">Conversion Funnel</h3>
+          <div className="space-y-4">
+            {data.funnelSteps.map((step, index) => (
+              <motion.div
+                key={step.step}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.15 + 0.5 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold text-gray-800">{step.step}</span>
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-600">
+                      {step.users.toLocaleString()} users
+                    </span>
+                    {step.dropoff > 0 && (
+                      <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded">
+                        -{step.dropoff}% drop
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="relative h-10 bg-gray-100 rounded-lg overflow-hidden">
+                  <motion.div
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${step.conversionRate}%` }}
+                    transition={{ duration: 0.8, delay: index * 0.15 + 0.6, ease: 'easeOut' }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-gray-700">
+                    {step.conversionRate}%
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+      </motion.div>
 
       {/* Insights */}
-      <div>
+      <motion.div variants={itemVariants}>
         <h3 className="text-2xl font-bold text-gray-900 mb-6">AI-Powered Insights</h3>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {data.insights.map((insight, idx) => (
-            <InsightCard key={insight.id} {...insight} index={idx} />
+            <motion.div
+              key={insight.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 + 1 }}
+            >
+              <InsightCard {...insight} index={idx} />
+            </motion.div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
