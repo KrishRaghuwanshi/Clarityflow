@@ -1,0 +1,134 @@
+import Link from 'next/link';
+import { Github, Twitter, Linkedin } from 'lucide-react';
+
+export default function Footer() {
+  const footerLinks = {
+    product: [
+      { name: 'Features', href: '/features' },
+      { name: 'Pricing', href: '/pricing' },
+      { name: 'Dashboard', href: '/dashboard' },
+    ],
+    company: [
+      { name: 'About', href: '#' },
+      { name: 'Blog', href: '#' },
+      { name: 'Careers', href: '#' },
+    ],
+    resources: [
+      { name: 'Documentation', href: '#' },
+      { name: 'Help Center', href: '#' },
+      { name: 'API Reference', href: '#' },
+    ],
+    legal: [
+      { name: 'Privacy', href: '#' },
+      { name: 'Terms', href: '#' },
+      { name: 'Security', href: '#' },
+    ],
+  };
+
+  return (
+    <footer className="bg-gray-900 text-gray-300">
+      <div className="container-custom py-12">
+        {/* Demo Notice */}
+        <div className="mb-8 rounded-lg bg-gray-800 p-4 border border-gray-700">
+          <p className="text-sm text-center">
+            <span className="font-semibold text-white">Demo Project:</span> This is a demonstration
+            of a production-ready Next.js application. All features are for showcase purposes.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600" />
+              <span className="text-lg font-bold text-white">Clarityflow</span>
+            </Link>
+            <p className="text-sm mb-4">Turn user behavior into clear, prioritized improvements.</p>
+            <div className="flex gap-4">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Links */}
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-3">Product</h3>
+            <ul className="space-y-2">
+              {footerLinks.product.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-3">Company</h3>
+            <ul className="space-y-2">
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-3">Resources</h3>
+            <ul className="space-y-2">
+              {footerLinks.resources.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-white mb-3">Legal</h3>
+            <ul className="space-y-2">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <p className="text-sm text-center text-gray-400">
+            © {new Date().getFullYear()} Clarityflow. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
