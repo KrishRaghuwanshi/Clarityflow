@@ -9,8 +9,12 @@ import Button from './ui/Button';
 export default function InteractiveDashboard() {
   const containerRef = useRef<HTMLDivElement>(null);
   const barsRef = useRef<HTMLDivElement[]>([]);
+  const chartBarRefs = useRef<HTMLDivElement[]>([]);
   const particlesRef = useRef<HTMLDivElement[]>([]);
+  const metricRefs = useRef<HTMLDivElement[]>([]);
+  const funnelTextsRef = useRef<HTMLDivElement[]>([]);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -18,7 +22,7 @@ export default function InteractiveDashboard() {
 
     const container = containerRef.current;
 
-    // Track mouse position
+    // Track mouse position for particle effects
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       mousePos.current = {
@@ -59,21 +63,55 @@ export default function InteractiveDashboard() {
 
     container.addEventListener('mousemove', handleMouseMove);
 
-    // Animate funnel bars ONCE
+    // Animate with timeline
     const tl = gsap.timeline({
       onComplete: () => setHasAnimated(true),
     });
 
+    // Staggered animation for all elements
+    if (metricRefs.current.length > 0) {
+      tl.from(metricRefs.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+      });
+    }
+
+    if (funnelTextsRef.current.length > 0) {
+      tl.from(funnelTextsRef.current, {
+        opacity: 0,
+        x: -20,
+        duration: 0.5,
+        stagger: 0.08,
+        ease: 'power2.out',
+      }, '-=0.4');
+    }
+
+    // Enhanced funnel bars with gradient animation
     barsRef.current.forEach((bar, i) => {
       if (bar) {
         tl.fromTo(
           bar,
-          { scaleX: 0, transformOrigin: 'left' },
-          { scaleX: 1, duration: 0.8, ease: 'power2.out' },
+          { scaleX: 0, transformOrigin: 'left', opacity: 0 },
+          { scaleX: 1, opacity: 1, duration: 0.9, ease: 'power2.out' },
           i * 0.15
         );
       }
     });
+
+    // Animate chart bars
+    if (chartBarRefs.current.length > 0) {
+      tl.from(chartBarRefs.current, {
+        scaleY: 0,
+        opacity: 0,
+        transformOrigin: 'bottom',
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'back.out(1.7)',
+      }, '-=0.5');
+    }
 
     // Gentle floating for particles
     particlesRef.current.forEach((particle, i) => {
@@ -96,6 +134,16 @@ export default function InteractiveDashboard() {
       tl.kill();
     };
   }, [hasAnimated]);
+
+  const getBarColor = () => {
+    const colors = [
+      'from-indigo-500 to-violet-500',
+      'from-indigo-600 to-violet-600',
+      'from-violet-500 to-pink-500',
+      'from-indigo-500 to-pink-500',
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
   const funnelData = [
     { label: 'Visitors', value: '10,000', width: '100%', color: 'from-indigo-500 to-violet-500' },
@@ -164,6 +212,46 @@ export default function InteractiveDashboard() {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Graph-like visualization */}
+      <div className="relative mb-8">
+        <div className="text-sm font-semibold text-gray-700 mb-4">Weekly Performance</div>
+        <div className="relative bg-gray-50 rounded-xl p-4 h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:20px_20px]" />
+          <div className="absolute bottom-4 left-4 right-4 h-32 flex items-end justify-between gap-2">
+            {[
+              { height: 60, label: 'Mon', value: '2.8K' },
+              { height: 85, label: 'Tue', value: '4.1K' },
+              { height: 72, label: 'Wed', value: '3.5K' },
+              { height: 95, label: 'Thu', value: '5.2K' },
+              { height: 78, label: 'Fri', value: '3.8K' },
+              { height: 92, label: 'Sat', value: '4.9K' },
+              { height: 88, label: 'Sun', value: '4.6K' },
+            ].map((bar, i) => (
+              <motion.div
+                key={bar.label}
+                className="flex-1 flex flex-col items-center justify-end"
+                onMouseEnter={() => setHoveredBar(i)}
+                onMouseLeave={() => setHoveredBar(null)}
+              >
+                <motion.div
+                  ref={(el) => {
+                    if (el) chartBarRefs.current[i] = el;
+                  }}
+                  className={`w-full bg-gradient-to-t ${hoveredBar === i ? 'from-indigo-600 to-violet-600' : 'from-indigo-500 to-violet-500'} rounded-t-lg shadow-lg transition-all duration-300`}
+                  style={{ height: `${bar.height}%` }}
+                  whileHover={{ scaleY: 1.05 }}
+                >
+                  <div className={`absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-white ${hoveredBar === i ? 'opacity-100' : 'opacity-0'} transition-opacity`}>
+                    {bar.value}
+                  </div>
+                </motion.div>
+                <div className="text-xs text-gray-500 mt-1">{bar.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Animated funnel */}

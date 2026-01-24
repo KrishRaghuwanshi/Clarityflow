@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Button from './ui/Button';
-import ThemeToggle from './ThemeToggle';
 import { useUIStore } from '@/store/uiStore';
 
 export default function Navigation() {
@@ -12,6 +11,7 @@ export default function Navigation() {
   const navigation = [
     { name: 'Features', href: '/features' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Improvement Plans', href: '/improvement-plans' },
     { name: 'Dashboard', href: '/dashboard' },
   ];
 
@@ -42,7 +42,6 @@ export default function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-4">
-            <ThemeToggle />
             <Link href="/signin">
               <Button variant="ghost" size="md">
                 Sign in

@@ -80,7 +80,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Providers>
           <Navigation />
-          <main>{children}</main>
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
       </body>

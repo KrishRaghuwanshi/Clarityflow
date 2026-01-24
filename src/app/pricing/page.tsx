@@ -95,30 +95,13 @@ export default function PricingPage() {
 
   const handleCheckout = async (planName: string) => {
     setLoadingPlan(planName);
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          planName,
-          billingCycle: isAnnual ? 'annual' : 'monthly',
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Checkout failed');
-      }
-
-      // Redirect to checkout URL
-      window.location.href = result.checkoutUrl;
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert(error instanceof Error ? error.message : 'Checkout failed. Please try again.');
-    } finally {
+    
+    // Simulate processing delay
+    setTimeout(() => {
+      // Instead of checkout, redirect to demo booking page
+      window.location.href = '/book?plan=' + encodeURIComponent(planName);
       setLoadingPlan(null);
-    }
+    }, 800);
   };
 
   return (
