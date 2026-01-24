@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, MessageCircle, Mail, FileText } from 'lucide-react';
+import { Search, Mail, FileText } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
@@ -88,7 +88,7 @@ export default function HelpPage() {
       {/* Support Options */}
       <section className="py-12 bg-white">
         <div className="container-custom">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -98,35 +98,15 @@ export default function HelpPage() {
                 <div className="rounded-lg bg-indigo-100 p-3 w-fit mx-auto mb-4">
                   <FileText className="h-6 w-6 text-indigo-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Documentation</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">User Guides</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Comprehensive guides and API references.
+                  Step-by-step tutorials and resources to help you get the most out of Clarityflow.
                 </p>
                 <Link href="/docs">
                   <Button variant="secondary" className="w-full">
-                    Browse docs
+                    Browse guides
                   </Button>
                 </Link>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card hover className="text-center h-full">
-                <div className="rounded-lg bg-green-100 p-3 w-fit mx-auto mb-4">
-                  <MessageCircle className="h-6 w-6 text-green-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Live Chat</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Chat with our support team in real-time.
-                </p>
-                <Button variant="secondary" className="w-full">
-                  Start chat
-                </Button>
               </Card>
             </motion.div>
 

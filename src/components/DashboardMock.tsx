@@ -46,6 +46,13 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+const FUNNEL_GRADIENTS = [
+  'from-cyan-400 to-blue-500',
+  'from-blue-500 to-indigo-500',
+  'from-indigo-500 to-violet-500',
+  'from-violet-500 to-fuchsia-500',
+];
+
 function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
   return (
     <span className="text-3xl font-bold text-gray-900">
@@ -181,7 +188,7 @@ export default function DashboardMock() {
                 </div>
                 <div className="relative h-10 bg-gray-100 rounded-lg overflow-hidden">
                   <motion.div
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg"
+                    className={`absolute top-0 left-0 h-full bg-gradient-to-r ${FUNNEL_GRADIENTS[index % FUNNEL_GRADIENTS.length]} rounded-lg`}
                     initial={{ width: 0 }}
                     animate={{ width: `${step.conversionRate}%` }}
                     transition={{ duration: 0.8, delay: index * 0.15 + 0.6, ease: 'easeOut' }}

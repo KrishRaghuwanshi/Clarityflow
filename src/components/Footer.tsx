@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Footer() {
   const footerLinks = {
@@ -30,33 +30,20 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600" />
-              <span className="text-lg font-bold text-white">Clarityflow</span>
+            <Link href="/" className="inline-block mb-4 bg-white rounded-lg px-2 py-1">
+              <Image
+                src="/logo/logo.png"
+                alt="Clarityflow"
+                width={160}
+                height={48}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-sm mb-4">Turn user behavior into clear, prioritized improvements.</p>
-            <div className="flex gap-4">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
+            <div className="space-y-1 text-xs text-gray-500 mt-6">
+              <p>License: CF-2026-DC-8842</p>
+              <p>1200 17th St NW, Suite 400</p>
+              <p>Washington, DC 20036</p>
             </div>
           </div>
 

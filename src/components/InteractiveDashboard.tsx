@@ -99,10 +99,10 @@ export default function InteractiveDashboard() {
   }, [hasAnimated]);
 
   const funnelData = [
-    { label: 'Visitors', value: '10,000', width: '100%', color: 'from-indigo-500 to-violet-500' },
-    { label: 'Sign Up', value: '6,800', width: '68%', color: 'from-indigo-400 to-violet-400' },
-    { label: 'Onboarding', value: '3,944', width: '39%', color: 'from-indigo-500 to-pink-500' },
-    { label: 'Active', value: '1,795', width: '18%', color: 'from-violet-500 to-pink-500' },
+    { label: 'Visitors', value: '10,000', width: '100%', color: 'from-cyan-400 to-blue-500' },
+    { label: 'Sign Up', value: '6,800', width: '68%', color: 'from-blue-500 to-indigo-500' },
+    { label: 'Onboarding', value: '3,944', width: '39%', color: 'from-indigo-500 to-violet-500' },
+    { label: 'Active', value: '1,795', width: '18%', color: 'from-violet-500 to-fuchsia-500' },
   ];
 
   return (
@@ -120,7 +120,7 @@ export default function InteractiveDashboard() {
           ref={(el) => {
             if (el) particlesRef.current[i] = el;
           }}
-          className="absolute w-2 h-2 rounded-full bg-indigo-400/30 pointer-events-none"
+          className="absolute w-2 h-2 rounded-full bg-blue-400/30 pointer-events-none"
           style={{
             left: `${15 + Math.random() * 70}%`,
             top: `${15 + Math.random() * 70}%`,
@@ -173,7 +173,7 @@ export default function InteractiveDashboard() {
         <div className="h-48 w-full bg-gray-50 rounded-xl border border-gray-100 relative overflow-hidden flex items-end px-4 pb-0">
           {/* Graph Lines */}
           <svg
-            className="w-full h-full absolute inset-0 text-indigo-500"
+            className="w-full h-full absolute inset-0 text-blue-500"
             preserveAspectRatio="none"
             viewBox="0 0 100 50"
           >
@@ -244,13 +244,13 @@ export default function InteractiveDashboard() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 1.2, duration: 0.5 }}
-        className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-4 shadow-2xl max-w-[180px] border border-indigo-400/30"
+        className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-4 shadow-2xl max-w-[180px] border border-blue-400/30"
       >
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
           <span className="text-xs font-semibold text-white">AI Insight</span>
         </div>
-        <div className="text-xs text-indigo-100">
+        <div className="text-xs text-blue-100">
           Simplify step 2 form to increase conversion by{' '}
           <span className="font-bold text-white">+18%</span>
         </div>

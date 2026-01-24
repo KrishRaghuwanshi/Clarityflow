@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, TrendingUp, Zap, X, CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import Card from './ui/Card';
 import Button from './ui/Button';
 
@@ -65,6 +66,7 @@ export default function InsightCard({
   index = 0,
 }: InsightCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const icons = {
     'drop-off': AlertCircle,
@@ -205,7 +207,7 @@ export default function InsightCard({
                     className="flex-1"
                     onClick={() => {
                       setIsModalOpen(false);
-                      alert('Improvement plan started! Check your project board.');
+                      router.push('/book');
                     }}
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
