@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import Button from './ui/Button';
 import { useUIStore } from '@/store/uiStore';
@@ -11,19 +12,24 @@ export default function Navigation() {
   const navigation = [
     { name: 'Features', href: '/features' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Improvement Plans', href: '/improvement-plans' },
     { name: 'Dashboard', href: '/dashboard' },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <nav className="container-custom" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600" />
-              <span className="text-xl font-bold text-gray-900">Clarityflow</span>
+              <Image
+                src="/logo/logo.png"
+                alt="Clarityflow"
+                width={160}
+                height={48}
+                className="h-12 w-auto"
+                priority
+              />
             </Link>
           </div>
 

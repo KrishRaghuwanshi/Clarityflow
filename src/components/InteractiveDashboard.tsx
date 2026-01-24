@@ -9,12 +9,8 @@ import Button from './ui/Button';
 export default function InteractiveDashboard() {
   const containerRef = useRef<HTMLDivElement>(null);
   const barsRef = useRef<HTMLDivElement[]>([]);
-  const chartBarRefs = useRef<HTMLDivElement[]>([]);
   const particlesRef = useRef<HTMLDivElement[]>([]);
-  const metricRefs = useRef<HTMLDivElement[]>([]);
-  const funnelTextsRef = useRef<HTMLDivElement[]>([]);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -63,31 +59,10 @@ export default function InteractiveDashboard() {
 
     container.addEventListener('mousemove', handleMouseMove);
 
-    // Animate with timeline
+    // Animate funnel bars ONCE
     const tl = gsap.timeline({
       onComplete: () => setHasAnimated(true),
     });
-
-    // Staggered animation for all elements
-    if (metricRefs.current.length > 0) {
-      tl.from(metricRefs.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power2.out',
-      });
-    }
-
-    if (funnelTextsRef.current.length > 0) {
-      tl.from(funnelTextsRef.current, {
-        opacity: 0,
-        x: -20,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'power2.out',
-      }, '-=0.4');
-    }
 
     // Enhanced funnel bars with gradient animation
     barsRef.current.forEach((bar, i) => {
@@ -100,18 +75,6 @@ export default function InteractiveDashboard() {
         );
       }
     });
-
-    // Animate chart bars
-    if (chartBarRefs.current.length > 0) {
-      tl.from(chartBarRefs.current, {
-        scaleY: 0,
-        opacity: 0,
-        transformOrigin: 'bottom',
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'back.out(1.7)',
-      }, '-=0.5');
-    }
 
     // Gentle floating for particles
     particlesRef.current.forEach((particle, i) => {
@@ -134,16 +97,6 @@ export default function InteractiveDashboard() {
       tl.kill();
     };
   }, [hasAnimated]);
-
-  const getBarColor = () => {
-    const colors = [
-      'from-indigo-500 to-violet-500',
-      'from-indigo-600 to-violet-600',
-      'from-violet-500 to-pink-500',
-      'from-indigo-500 to-pink-500',
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
 
   const funnelData = [
     { label: 'Visitors', value: '10,000', width: '100%', color: 'from-indigo-500 to-violet-500' },
@@ -176,7 +129,7 @@ export default function InteractiveDashboard() {
       ))}
 
       {/* Header */}
-      <div className="relative flex items-center justify-between mb-6">
+      <div className="relative flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-400/50" />
           <span className="text-sm font-medium text-gray-700">Live Analytics</span>
@@ -214,42 +167,46 @@ export default function InteractiveDashboard() {
         ))}
       </div>
 
-      {/* Graph-like visualization */}
+      {/* Animated Graph Section */}
       <div className="relative mb-8">
-        <div className="text-sm font-semibold text-gray-700 mb-4">Weekly Performance</div>
-        <div className="relative bg-gray-50 rounded-xl p-4 h-48 overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:20px_20px]" />
-          <div className="absolute bottom-4 left-4 right-4 h-32 flex items-end justify-between gap-2">
-            {[
-              { height: 60, label: 'Mon', value: '2.8K' },
-              { height: 85, label: 'Tue', value: '4.1K' },
-              { height: 72, label: 'Wed', value: '3.5K' },
-              { height: 95, label: 'Thu', value: '5.2K' },
-              { height: 78, label: 'Fri', value: '3.8K' },
-              { height: 92, label: 'Sat', value: '4.9K' },
-              { height: 88, label: 'Sun', value: '4.6K' },
-            ].map((bar, i) => (
-              <motion.div
-                key={bar.label}
-                className="flex-1 flex flex-col items-center justify-end"
-                onMouseEnter={() => setHoveredBar(i)}
-                onMouseLeave={() => setHoveredBar(null)}
-              >
-                <motion.div
-                  ref={(el) => {
-                    if (el) chartBarRefs.current[i] = el;
-                  }}
-                  className={`w-full bg-gradient-to-t ${hoveredBar === i ? 'from-indigo-600 to-violet-600' : 'from-indigo-500 to-violet-500'} rounded-t-lg shadow-lg transition-all duration-300`}
-                  style={{ height: `${bar.height}%` }}
-                  whileHover={{ scaleY: 1.05 }}
-                >
-                  <div className={`absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-white ${hoveredBar === i ? 'opacity-100' : 'opacity-0'} transition-opacity`}>
-                    {bar.value}
-                  </div>
-                </motion.div>
-                <div className="text-xs text-gray-500 mt-1">{bar.label}</div>
-              </motion.div>
-            ))}
+        <div className="text-sm font-semibold text-gray-700 mb-4">Live Traffic</div>
+        <div className="h-48 w-full bg-gray-50 rounded-xl border border-gray-100 relative overflow-hidden flex items-end px-4 pb-0">
+          {/* Graph Lines */}
+          <svg
+            className="w-full h-full absolute inset-0 text-indigo-500"
+            preserveAspectRatio="none"
+            viewBox="0 0 100 50"
+          >
+            <motion.path
+              d="M0,50 L0,30 C10,25 20,40 30,35 C40,30 50,10 60,15 C70,20 80,5 90,10 L100,5 L100,50 Z"
+              fill="url(#gradient)"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.2 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="currentColor" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M0,30 C10,25 20,40 30,35 C40,30 50,10 60,15 C70,20 80,5 90,10 L100,5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, ease: 'easeInOut' }}
+            />
+          </svg>
+
+          {/* Grid Lines */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none">
+            <div className="w-full h-1/4 border-t border-gray-200/50" />
+            <div className="w-full h-1/4 border-t border-gray-200/50" />
+            <div className="w-full h-1/4 border-t border-gray-200/50" />
           </div>
         </div>
       </div>
