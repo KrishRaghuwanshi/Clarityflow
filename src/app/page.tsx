@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Hero from '@/components/Hero';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+import InteractiveDashboard from '@/components/InteractiveDashboard';
 import { BarChart3, Target, Zap, Users, ArrowRight } from 'lucide-react';
 
 export default function Home() {
@@ -60,7 +61,7 @@ export default function Home() {
             Trusted by product teams at
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-            {['Dropbox', 'Notion', 'Linear', 'Figma', 'Vercel'].map((company) => (
+            {['John Finance', 'Sarah Devs', 'Innovo'].map((company) => (
               <div
                 key={company}
                 className="text-xl font-bold text-gray-300 hover:text-gray-400 transition-colors"
@@ -145,19 +146,9 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative rounded-2xl shadow-2xl overflow-hidden border border-gray-200"
+            className="max-w-5xl mx-auto"
           >
-            <div className="aspect-video bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
-              <div className="text-center text-white p-8">
-                <BarChart3 className="h-24 w-24 mx-auto mb-4 opacity-50" />
-                <p className="text-lg">Interactive dashboard preview</p>
-                <Link href="/dashboard">
-                  <Button size="lg" className="mt-4">
-                    View Full Dashboard
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            <InteractiveDashboard />
           </motion.div>
         </div>
       </section>

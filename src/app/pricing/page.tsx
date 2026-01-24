@@ -91,6 +91,35 @@ const faqs = [
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handleCheckout = async (planName: string) => {
+    setLoadingPlan(planName);
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planName,
+          billingCycle: isAnnual ? 'annual' : 'monthly',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Checkout failed');
+      }
+
+      // Redirect to checkout URL
+      window.location.href = result.checkoutUrl;
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert(error instanceof Error ? error.message : 'Checkout failed. Please try again.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <>
@@ -184,15 +213,15 @@ export default function PricingPage() {
                     )}
                   </div>
 
-                  <Link href="/book">
-                    <Button
-                      size="lg"
-                      variant={plan.popular ? 'primary' : 'secondary'}
-                      className="w-full mb-6"
-                    >
-                      Start free trial
-                    </Button>
-                  </Link>
+                  <Button
+                    size="lg"
+                    variant={plan.popular ? 'primary' : 'secondary'}
+                    className="w-full mb-6"
+                    onClick={() => handleCheckout(plan.name)}
+                    disabled={loadingPlan === plan.name}
+                  >
+                    {loadingPlan === plan.name ? 'Processing...' : 'Start free trial'}
+                  </Button>
 
                   <div className="space-y-3">
                     {plan.features.map((feature) => (

@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock } from 'lucide-react';
+import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
@@ -67,6 +69,42 @@ const categories = [
 ];
 
 export default function BlogPage() {
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubscribing(true);
+    setSubscribeStatus('idle');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Subscription failed');
+      }
+
+      setSubscribeStatus('success');
+      setStatusMessage(result.message);
+      setEmail('');
+    } catch (error) {
+      setSubscribeStatus('error');
+      setStatusMessage(error instanceof Error ? error.message : 'Subscription failed');
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -124,30 +162,32 @@ export default function BlogPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card hover className="h-full flex flex-col">
-                  <div className="aspect-video bg-gradient-to-br from-indigo-100 to-violet-100 rounded-lg mb-4" />
-                  <span className="inline-block text-xs font-semibold text-indigo-600 mb-2">
-                    {post.category}
-                  </span>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-indigo-600 transition-colors cursor-pointer">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4 flex-grow">{post.excerpt}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {new Date(post.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                <Link href={`/blog/${post.slug}`}>
+                  <Card hover className="h-full flex flex-col cursor-pointer">
+                    <div className="aspect-video bg-gradient-to-br from-indigo-100 to-violet-100 rounded-lg mb-4" />
+                    <span className="inline-block text-xs font-semibold text-indigo-600 mb-2">
+                      {post.category}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4          w-4" />
-                      {post.readTime}
-                    </span>
-                  </div>
-                </Card>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2 hover:text-indigo-600 transition-colors">
+                      {post.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4 flex-grow">{post.excerpt}</p>
+                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {new Date(post.date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {post.readTime}
+                      </span>
+                    </div>
+                  </Card>
+                </Link>
               </motion.article>
             ))}
           </div>
@@ -162,14 +202,32 @@ export default function BlogPage() {
             <p className="text-gray-600 mb-6">
               Get the latest articles, insights, and product updates delivered to your inbox.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-              <Button>Subscribe</Button>
-            </div>
+            {subscribeStatus === 'success' ? (
+              <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+                {statusMessage}
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe}>
+                {subscribeStatus === 'error' && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                    {statusMessage}
+                  </div>
+                )}
+                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    required
+                  />
+                  <Button type="submit" disabled={isSubscribing}>
+                    {isSubscribing ? 'Subscribing...' : 'Subscribe'}
+                  </Button>
+                </div>
+              </form>
+            )}
             <p className="mt-4 text-sm text-gray-500">No spam. Unsubscribe anytime.</p>
           </Card>
         </div>

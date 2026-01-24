@@ -27,14 +27,6 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container-custom py-12">
-        {/* Demo Notice */}
-        <div className="mb-8 rounded-lg bg-gray-800 p-4 border border-gray-700">
-          <p className="text-sm text-center">
-            <span className="font-semibold text-white">Demo Project:</span> This is a demonstration
-            of a production-ready Next.js application. All features are for showcase purposes.
-          </p>
-        </div>
-
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">

@@ -25,9 +25,25 @@ export default function ContactPage() {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Contact form data:', data);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      console.log('Contact submitted:', result);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Contact error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
+    }
   };
 
   if (isSubmitted) {

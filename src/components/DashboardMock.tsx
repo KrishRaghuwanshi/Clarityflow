@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Monitor, Smartphone, TrendingUp, TrendingDown, Clock, Users } from 'lucide-react';
-import { useUIStore } from '@/store/uiStore';
+import { TrendingUp, TrendingDown, Clock, Users } from 'lucide-react';
+
 import Card from './ui/Card';
 import InsightCard from './InsightCard';
 
@@ -56,13 +56,13 @@ function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: strin
 }
 
 export default function DashboardMock() {
-  const { activeDevice, setActiveDevice } = useUIStore();
-
   const { data, isLoading } = useQuery<DashboardData>({
     queryKey: ['dashboard'],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      const response = await fetch('/dashboard.json');
+      const response = await fetch('/api/dashboard');
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard data');
+      }
       return response.json();
     },
   });
@@ -121,34 +121,6 @@ export default function DashboardMock() {
       initial="hidden"
       animate="visible"
     >
-      {/* Device Selector */}
-      <motion.div variants={itemVariants} className="flex justify-end">
-        <div className="inline-flex rounded-lg border border-gray-300 p-1 bg-white shadow-sm">
-          <button
-            onClick={() => setActiveDevice('desktop')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
-              activeDevice === 'desktop'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            <Monitor className="h-4 w-4" />
-            Desktop
-          </button>
-          <button
-            onClick={() => setActiveDevice('mobile')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
-              activeDevice === 'mobile'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            <Smartphone className="h-4 w-4" />
-            Mobile
-          </button>
-        </div>
-      </motion.div>
-
       {/* Metrics Grid */}
       <motion.div variants={itemVariants} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {metricCards.map((metric, index) => (

@@ -24,10 +24,25 @@ export default function BookPage() {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Form data:', data);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit booking');
+      }
+
+      console.log('Booking confirmed:', result);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Booking error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to submit booking. Please try again.');
+    }
   };
 
   if (isSubmitted) {

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Button from './ui/Button';
+import ThemeToggle from './ThemeToggle';
 import { useUIStore } from '@/store/uiStore';
 
 export default function Navigation() {
@@ -15,7 +16,7 @@ export default function Navigation() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <nav className="container-custom" aria-label="Main navigation">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -41,6 +42,7 @@ export default function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-4">
+            <ThemeToggle />
             <Link href="/signin">
               <Button variant="ghost" size="md">
                 Sign in

@@ -11,10 +11,35 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo only - show alert
-    alert('This is a demo. Sign-in functionality would be implemented with your auth provider.');
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Sign in failed');
+      }
+
+      console.log('Sign in successful:', result);
+      // Redirect to dashboard on success
+      window.location.href = '/dashboard';
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Sign in failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -35,6 +60,11 @@ export default function SignInPage() {
 
         <Card>
           <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email address
