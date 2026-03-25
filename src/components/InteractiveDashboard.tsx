@@ -108,7 +108,7 @@ export default function InteractiveDashboard() {
   return (
     <div
       ref={containerRef}
-      className="relative rounded-2xl overflow-hidden bg-white border border-gray-200 p-8 shadow-2xl"
+      className="relative rounded-2xl overflow-hidden bg-white border border-gray-200 p-4 sm:p-8 shadow-2xl max-w-full"
     >
       {/* Subtle grid background */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.02)_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -154,12 +154,12 @@ export default function InteractiveDashboard() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 + i * 0.1 }}
-            className="rounded-xl bg-gray-50 border border-gray-100 p-4 hover:shadow-md transition-shadow"
+            className="rounded-xl bg-gray-50 border border-gray-100 p-2 sm:p-4 hover:shadow-md transition-shadow"
           >
-            <div className="text-xs text-gray-500 mb-1">{metric.label}</div>
-            <div className="text-2xl font-bold text-gray-900">{metric.value}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500 mb-1 leading-tight">{metric.label}</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">{metric.value}</div>
             <div
-              className={`text-xs font-medium ${metric.positive ? 'text-green-600' : 'text-red-600'}`}
+              className={`text-[10px] sm:text-xs font-medium ${metric.positive ? 'text-green-600' : 'text-red-600'}`}
             >
               {metric.change}
             </div>
@@ -244,7 +244,7 @@ export default function InteractiveDashboard() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 1.2, duration: 0.5 }}
-        className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-4 shadow-2xl max-w-[180px] border border-blue-400/30"
+        className="relative mt-6 sm:absolute sm:-right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-4 shadow-xl sm:shadow-2xl max-w-full sm:max-w-[180px] border border-blue-400/30"
       >
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />

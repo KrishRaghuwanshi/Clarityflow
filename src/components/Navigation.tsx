@@ -18,7 +18,7 @@ export default function Navigation() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <nav className="container-custom" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-14 sm:h-20">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
@@ -27,7 +27,7 @@ export default function Navigation() {
                 alt="Clarityflow"
                 width={160}
                 height={48}
-                className="h-12 w-auto"
+                className="h-9 sm:h-12 w-auto"
                 priority
               />
             </Link>

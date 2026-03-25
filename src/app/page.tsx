@@ -55,12 +55,12 @@ export default function Home() {
       <Hero />
 
       {/* Social Proof */}
-      <section className="py-12 bg-white border-y border-gray-200">
+      <section className="pt-12 pb-24 sm:py-20 bg-white border-y border-gray-200">
         <div className="container-custom">
           <p className="text-center text-sm font-medium text-gray-500 mb-8">
             Trusted by product teams at
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-12 gap-y-4 sm:gap-y-6">
             {['John Finance', 'Sarah Devs', 'Innovo'].map((company) => (
               <div
                 key={company}
@@ -74,9 +74,9 @@ export default function Home() {
       </section>
 
       {/* Problem → Solution */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-20 bg-gray-50">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-16 hidden sm:block">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -120,7 +120,7 @@ export default function Home() {
       </section>
 
       {/* Product Preview */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <motion.h2
@@ -154,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-20 bg-gray-50">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <motion.h2
@@ -197,12 +197,12 @@ export default function Home() {
       </section>
 
       {/* Pricing Teaser */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <Card className="text-center p-12 bg-gradient-to-br from-indigo-50 to-violet-50">
-              <h2 className="heading-md mb-4">Ready to improve your product?</h2>
-              <p className="text-xl text-gray-600 mb-8">
+            <Card className="text-center p-6 sm:p-12 bg-gradient-to-br from-indigo-50 to-violet-50">
+              <h2 className="text-3xl sm:heading-md mb-4 font-bold tracking-tight">Ready to improve your product?</h2>
+              <p className="text-lg sm:text-xl text-gray-600 mb-8">
                 Start turning user behavior into clear improvements today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
