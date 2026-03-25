@@ -12,17 +12,17 @@ export default function Hero() {
       <motion.div
         animate={{ scale: [1, 1.1, 1], x: [0, 30, 0], y: [0, 50, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-20 left-10 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"
+        className="absolute top-20 left-10 w-96 h-96 lg:w-[500px] lg:h-[500px] lg:-left-20 lg:-top-10 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 lg:opacity-40 pointer-events-none"
       />
       <motion.div
         animate={{ scale: [1, 1.2, 1], x: [0, -40, 0], y: [0, 40, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-40 right-10 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"
+        className="absolute top-40 right-10 w-96 h-96 lg:w-[600px] lg:h-[600px] lg:-right-10 lg:top-20 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 lg:opacity-40 pointer-events-none"
       />
       <motion.div
         animate={{ scale: [1, 1.1, 1], x: [0, 20, 0], y: [0, -30, 0] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -bottom-10 left-32 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"
+        className="absolute -bottom-10 left-32 w-96 h-96 lg:w-[500px] lg:h-[500px] lg:-bottom-32 lg:left-1/3 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 lg:opacity-40 pointer-events-none"
       />
       <div className="container-custom">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
